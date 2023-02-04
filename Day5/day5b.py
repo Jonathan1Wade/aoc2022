@@ -1,9 +1,8 @@
 import re
-import sys
 from collections import deque
 
 def main() -> None:
-    with open("Day5/input.txt", "r") as f:
+    with open("Day5/input.txt") as f:
         data = f.read()
 
     grid, instrs = data.split("\n\n")
@@ -28,8 +27,10 @@ def main() -> None:
     for instr in instrs:
         amount, fr, to = map(int, re.findall(r"(\d+)", instr))
 
-        for _ in range(amount):
-            cols[to - 1].appendleft(cols[fr - 1].popleft())
+        move = []
+        for i in range(amount):
+            move.append(cols[fr-1].popleft())
+        cols[to-1] = deque(move) + cols[to-1]
 
     print("".join(col[0] for col in cols))
 
